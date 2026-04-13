@@ -92,11 +92,13 @@ class EmployeeViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_blocked_for_rh(self):
-        # Le RH peut voir la page mais pas soumettre la suppression
-        # On teste que le POST est bloqué ou redirigé
         self.client.force_login(self.rh)
+        # GET doit rediriger
+        response = self.client.get(reverse('employee_delete', args=[self.emp.pk]))
+        self.assertRedirects(response, reverse('employees_list'))
+        # POST doit aussi rediriger et ne pas supprimer l'employé
         response = self.client.post(reverse('employee_delete', args=[self.emp.pk]))
-        # Doit être redirigé ou refusé — l'employé ne doit pas être supprimé
+        self.assertRedirects(response, reverse('employees_list'))
         self.assertTrue(Employee.objects.filter(pk=self.emp.pk).exists())
 
     def test_delete_accessible_for_admin(self):

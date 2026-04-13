@@ -87,8 +87,11 @@ def employee_edit(request, pk):
     return render(request, 'employees/form.html', {'form': form, 'action': 'Modifier', 'employee': employee})
 
 
-@require_can_edit
+@login_required
 def employee_delete(request, pk):
+    if not request.user.is_admin:
+        messages.error(request, "Vous n'avez pas les droits pour effectuer cette action.")
+        return redirect('employees_list')
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == 'POST':
         name = employee.get_full_name()
