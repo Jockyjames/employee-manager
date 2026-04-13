@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} — EmployManager{% endblock %}
+{% block nav_employees %}active{% endblock %}
+{% block page_title %}{{ action }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+  <a href="{% url 'employees_list' %}">Employés</a>
+  {% if employee %}<span class="sep">›</span><a href="{% url 'employee_detail' employee.pk %}">{{ employee.get_full_name }}</a>{% endif %}
+  <span class="sep">›</span>
+  <span class="current">{{ action }}</span>
+</div>
+
+<div style="max-width:820px">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header" style="margin-bottom:20px">
+        <div>
+          <div class="card-title" style="display:flex;align-items:center;gap:8px">
+            <svg width="15" height="15" fill="none" stroke="var(--accent)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Informations personnelles
+          </div>
+          <div class="card-subtitle">Identité et coordonnées de l'employé</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Prénom *</label>
+          <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value|default:'' }}" required placeholder="Jean">
+          {% if form.first_name.errors %}<div class="form-error">{{ form.first_name.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom *</label>
+          <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value|default:'' }}" required placeholder="Dupont">
+          {% if form.last_name.errors %}<div class="form-error">{{ form.last_name.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input type="email" name="email" class="form-control" value="{{ form.email.value|default:'' }}" required placeholder="jean.dupont@entreprise.com">
+          {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="text" name="phone" class="form-control" value="{{ form.phone.value|default:'' }}" placeholder="+225 00 00 00 00">
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Adresse</label>
+          <textarea name="address" class="form-control" rows="2" placeholder="Adresse complète">{{ form.address.value|default:'' }}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Photo</label>
+          <input type="file" name="photo" class="form-control" accept="image/*">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header" style="margin-bottom:20px">
+        <div>
+          <div class="card-title" style="display:flex;align-items:center;gap:8px">
+            <svg width="15" height="15" fill="none" stroke="var(--accent)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Informations professionnelles
+          </div>
+          <div class="card-subtitle">Poste, département et contrat</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Matricule *</label>
+          <input type="text" name="employee_id" class="form-control" value="{{ form.employee_id.value|default:'' }}" placeholder="EMP-001" required>
+          {% if form.employee_id.errors %}<div class="form-error">{{ form.employee_id.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Département *</label>
+          <select name="department" class="form-control" required>
+            <option value="">— Sélectionner —</option>
+            {% for dept in form.department.field.queryset %}
+              <option value="{{ dept.pk }}" {% if form.department.value == dept.pk|stringformat:"s" %}selected{% endif %}>{{ dept.name }}</option>
+            {% endfor %}
+          </select>
+          {% if form.department.errors %}<div class="form-error">{{ form.department.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Poste *</label>
+          <input type="text" name="position" class="form-control" value="{{ form.position.value|default:'' }}" placeholder="Intitulé du poste" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type de contrat *</label>
+          <select name="contract_type" class="form-control" required>
+            {% for val, label in form.contract_type.field.choices %}
+              <option value="{{ val }}" {% if form.contract_type.value == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Statut *</label>
+          <select name="status" class="form-control" required>
+            {% for val, label in form.status.field.choices %}
+              <option value="{{ val }}" {% if form.status.value == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date d'embauche *</label>
+          <input type="date" name="hire_date" class="form-control" value="{{ form.hire_date.value|date:'Y-m-d'|default:'' }}" required>
+          {% if form.hire_date.errors %}<div class="form-error">{{ form.hire_date.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date de fin</label>
+          <input type="date" name="end_date" class="form-control" value="{{ form.end_date.value|date:'Y-m-d'|default:'' }}">
+        </div>
+        {% if form.salary %}
+        <div class="form-group">
+          <label class="form-label">Salaire (FCFA)</label>
+          <input type="number" name="salary" class="form-control" value="{{ form.salary.value|default:'' }}" placeholder="0" min="0" step="1000">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button type="submit" class="btn btn-primary">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        {% if employee %}Enregistrer les modifications{% else %}Créer l'employé{% endif %}
+      </button>
+      <a href="{% if employee %}{% url 'employee_detail' employee.pk %}{% else %}{% url 'employees_list' %}{% endif %}" class="btn btn-secondary">Annuler</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

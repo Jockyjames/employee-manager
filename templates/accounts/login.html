@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion — EmployManager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#1d4ed8;--accent-hover:#1e40af;--accent-dim:rgba(29,78,216,.08);
+      --border:#dde3ec;--surface:#ffffff;--surface-2:#f0f4f8;--bg:#f5f7fa;
+      --text:#111827;--text-muted:#6b7280;--text-dim:#9ca3af;
+      --danger:#dc2626;--success:#059669;
+      --font:'Inter',sans-serif;--font-display:'Inter Tight',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
+
+    .split{display:flex;width:100%;min-height:100vh}
+
+    /* Left - form */
+    .left{
+      flex:1;display:flex;align-items:center;justify-content:center;
+      padding:60px 48px;background:var(--surface);
+      border-right:1px solid var(--border);
+    }
+    .login-box{width:100%;max-width:380px}
+
+    .login-logo{display:flex;align-items:center;gap:12px;margin-bottom:44px}
+    .logo-icon{width:42px;height:42px;border-radius:11px;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(29,78,216,.3)}
+    .logo-icon svg{color:#fff}
+    .logo-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text)}
+    .logo-tag{font-size:12px;color:var(--text-dim)}
+
+    h1{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:6px}
+    .subtitle{color:var(--text-muted);font-size:14px;margin-bottom:32px}
+
+    .form-group{margin-bottom:16px}
+    .form-label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text);margin-bottom:7px}
+    .form-label svg{color:var(--text-dim);width:14px;height:14px}
+    .form-control{
+      width:100%;padding:10px 14px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:8px;color:var(--text);font-size:14px;
+      font-family:var(--font);outline:none;
+      transition:border-color .15s,box-shadow .15s;
+      box-shadow:0 1px 2px rgba(0,0,0,.05);
+    }
+    .form-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+    .form-control::placeholder{color:var(--text-dim)}
+    .form-error{font-size:12px;color:var(--danger);margin-top:5px;display:flex;align-items:center;gap:4px}
+
+    .remember-row{display:flex;align-items:center;gap:8px;margin-bottom:24px}
+    .remember-row input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;cursor:pointer}
+    .remember-row label{font-size:13px;color:var(--text-muted);cursor:pointer}
+
+    .btn-login{
+      width:100%;padding:11px;border-radius:8px;
+      background:var(--accent);color:#fff;border:none;
+      font-family:var(--font);font-size:14px;font-weight:600;
+      cursor:pointer;transition:background .15s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 2px 8px rgba(29,78,216,.3);
+    }
+    .btn-login:hover{background:var(--accent-hover)}
+    .btn-login svg{width:16px;height:16px}
+
+    .error-banner{
+      background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.2);
+      color:var(--danger);border-radius:8px;padding:11px 14px;
+      font-size:13px;margin-bottom:20px;
+      display:flex;align-items:flex-start;gap:8px;
+    }
+    .error-banner svg{flex-shrink:0;margin-top:1px;width:16px;height:16px}
+
+    .divider{display:flex;align-items:center;gap:12px;margin:24px 0;color:var(--text-dim);font-size:12px}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    .login-footer{margin-top:32px;padding-top:20px;border-top:1px solid var(--border-light);text-align:center}
+    .login-footer p{font-size:12px;color:var(--text-dim)}
+
+    /* Right - illustration */
+    .right{
+      width:520px;background:linear-gradient(145deg,#1d4ed8 0%,#1e40af 50%,#1e3a8a 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:60px 48px;position:relative;overflow:hidden;
+    }
+    .right::before{
+      content:'';position:absolute;top:-60px;right:-60px;
+      width:320px;height:320px;border-radius:50%;
+      background:rgba(255,255,255,.04);
+    }
+    .right::after{
+      content:'';position:absolute;bottom:-80px;left:-40px;
+      width:280px;height:280px;border-radius:50%;
+      background:rgba(255,255,255,.04);
+    }
+
+    .illustration{position:relative;z-index:1;width:100%;max-width:340px;margin-bottom:40px}
+    .illustration svg{width:100%;height:auto}
+
+    .right-content{position:relative;z-index:1;text-align:center;color:#fff}
+    .right-content h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+    .right-content p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;max-width:280px;margin:0 auto}
+
+    .stat-row{display:flex;gap:24px;margin-top:32px;position:relative;z-index:1}
+    .stat-item{text-align:center}
+    .stat-num{font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;letter-spacing:-1px}
+    .stat-lbl{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+    @media(max-width:900px){.right{display:none}}
+  </style>
+</head>
+<body>
+<div class="split">
+  <!-- Formulaire -->
+  <div class="left">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <div class="logo-name">EmployManager</div>
+          <div class="logo-tag">Plateforme RH sécurisée</div>
+        </div>
+      </div>
+
+      <h1>Bon retour</h1>
+      <p class="subtitle">Connectez-vous à votre espace de gestion</p>
+
+      {% if form.non_field_errors %}
+        <div class="error-banner">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          {{ form.non_field_errors.0 }}
+        </div>
+      {% endif %}
+
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label class="form-label" for="id_email">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Adresse email
+          </label>
+          <input type="email" name="email" id="id_email" class="form-control"
+                 placeholder="votre@email.com"
+                 value="{{ form.email.value|default:'' }}"
+                 required autofocus>
+          {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="id_password">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Mot de passe
+          </label>
+          <input type="password" name="password" id="id_password" class="form-control"
+                 placeholder="••••••••" required>
+          {% if form.password.errors %}<div class="form-error">{{ form.password.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="remember-row">
+          <input type="checkbox" name="remember_me" id="id_remember_me">
+          <label for="id_remember_me">Se souvenir de moi</label>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+          Se connecter
+        </button>
+
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      </form>
+
+      <div class="login-footer">
+        <p>Accès réservé aux personnes autorisées</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Illustration -->
+  <div class="right">
+    <div class="illustration">
+      <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Building -->
+        <rect x="60" y="80" width="280" height="200" rx="8" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <!-- Windows row 1 -->
+        <rect x="90" y="110" width="40" height="30" rx="4" fill="rgba(255,255,255,.15)"/>
+        <rect x="150" y="110" width="40" height="30" rx="4" fill="rgba(255,255,255,.25)"/>
+        <rect x="210" y="110" width="40" height="30" rx="4" fill="rgba(255,255,255,.15)"/>
+        <rect x="270" y="110" width="40" height="30" rx="4" fill="rgba(255,255,255,.2)"/>
+        <!-- Windows row 2 -->
+        <rect x="90" y="160" width="40" height="30" rx="4" fill="rgba(255,255,255,.2)"/>
+        <rect x="150" y="160" width="40" height="30" rx="4" fill="rgba(255,255,255,.1)"/>
+        <rect x="210" y="160" width="40" height="30" rx="4" fill="rgba(255,255,255,.25)"/>
+        <rect x="270" y="160" width="40" height="30" rx="4" fill="rgba(255,255,255,.15)"/>
+        <!-- Door -->
+        <rect x="170" y="220" width="60" height="60" rx="4" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <circle cx="220" cy="252" r="3" fill="rgba(255,255,255,.6)"/>
+        <!-- Roof accent -->
+        <rect x="60" y="75" width="280" height="10" rx="4" fill="rgba(255,255,255,.2)"/>
+        <!-- Flag -->
+        <line x1="200" y1="30" x2="200" y2="75" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+        <rect x="200" y="30" width="30" height="18" rx="2" fill="rgba(255,255,255,.3)"/>
+
+        <!-- People icons -->
+        <!-- Person 1 -->
+        <circle cx="340" cy="170" r="16" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="340" cy="165" r="6" fill="rgba(255,255,255,.4)"/>
+        <path d="M328 185c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="rgba(255,255,255,.4)" stroke-width="1.5" fill="none"/>
+
+        <!-- Person 2 -->
+        <circle cx="60" cy="170" r="16" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="60" cy="165" r="6" fill="rgba(255,255,255,.4)"/>
+        <path d="M48 185c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="rgba(255,255,255,.4)" stroke-width="1.5" fill="none"/>
+
+        <!-- Chart bars bottom right -->
+        <rect x="310" y="220" width="12" height="40" rx="3" fill="rgba(255,255,255,.2)"/>
+        <rect x="328" y="235" width="12" height="25" rx="3" fill="rgba(255,255,255,.3)"/>
+        <rect x="346" y="225" width="12" height="35" rx="3" fill="rgba(255,255,255,.2)"/>
+
+        <!-- Shield left -->
+        <path d="M28 195 L40 190 L52 195 L52 210 C52 218 40 222 40 222 C40 222 28 218 28 210 Z" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <path d="M35 205 L38 208 L45 201" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="right-content">
+      <h2>Gérez vos équipes efficacement</h2>
+      <p>Une plateforme centralisée pour piloter vos ressources humaines en toute sécurité.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-lbl">Rôles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Sécurisé</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">JWT</div>
+        <div class="stat-lbl">Auth</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+[
+  {
+    "model": "employees.department",
+    "pk": 1,
+    "fields": {
+      "name": "Direction Générale",
+      "code": "DG",
+      "description": "Direction et stratégie de l'entreprise",
+      "created_at": "2024-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "employees.department",
+    "pk": 2,
+    "fields": {
+      "name": "Ressources Humaines",
+      "code": "RH",
+      "description": "Gestion du personnel et recrutement",
+      "created_at": "2024-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "employees.department",
+    "pk": 3,
+    "fields": {
+      "name": "Informatique",
+      "code": "IT",
+      "description": "Systèmes d'information et développement",
+      "created_at": "2024-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "employees.department",
+    "pk": 4,
+    "fields": {
+      "name": "Finance & Comptabilité",
+      "code": "FIN",
+      "description": "Gestion financière et comptable",
+      "created_at": "2024-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "employees.department",
+    "pk": 5,
+    "fields": {
+      "name": "Commercial & Marketing",
+      "code": "COM",
+      "description": "Ventes, marketing et communication",
+      "created_at": "2024-01-01T08:00:00Z"
+    }
+  }
+]
